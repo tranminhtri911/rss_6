@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">rss_6</string>
+    <string name="menu_history">History</string>
+    <string name="menu_favorite">Favorite</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_print">Print</string>
 </resources>

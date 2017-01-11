@@ -7,5 +7,5 @@
     <dimen name="text_title">15sp</dimen>
     <dimen name="five">5dp</dimen>
     <dimen name="image_detail_size">200dp</dimen>
-    <dimen name="image_news_size">50dip</dimen>
+    <dimen name="image_news_size">150dp</dimen>
 </resources>

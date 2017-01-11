@@ -1,6 +1,8 @@
 package com.framgia.rss_6.data.model;
 
-public class ChannelModel {
+import java.io.Serializable;
+
+public class ChannelModel implements Serializable {
     private String mCategory;
     private String mRssLink;
 

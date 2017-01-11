@@ -5,6 +5,6 @@
           android:layout_height="wrap_content"
           android:ellipsize="end"
           android:textColor="@color/color_blue"
-          android:textSize="@dimen/text_caterogy"
+          android:textSize="@dimen/dp_20"
           android:textStyle="bold"/>
 

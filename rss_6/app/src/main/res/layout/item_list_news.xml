@@ -8,7 +8,7 @@
         android:layout_width="@dimen/image_news_size"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:paddingTop="@dimen/five"/>
+        android:paddingTop="@dimen/dp_5"/>
 
     <TextView
         android:id="@+id/text_title"
@@ -17,7 +17,7 @@
         android:layout_alignTop="@+id/image_news"
         android:layout_toRightOf="@+id/image_news"
         android:textColor="@color/color_black"
-        android:textSize="@dimen/text_title"
+        android:textSize="@dimen/sp_15"
         android:textStyle="bold"
         android:typeface="sans"/>
 
@@ -28,7 +28,7 @@
         android:layout_below="@id/text_title"
         android:layout_toRightOf="@+id/image_news"
         android:textColor="@color/color_brown"
-        android:textSize="@dimen/text_size_pubdate"/>
+        android:textSize="@dimen/sp_12"/>
 
 </RelativeLayout>
 

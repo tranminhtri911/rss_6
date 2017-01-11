@@ -120,6 +120,41 @@ public class DatabaseManager extends SQLiteOpenHelper {
         return list;
     }
 
+    public List<NewsModel> getALLNewsFromData(String category) {
+        List<NewsModel> list = new ArrayList<NewsModel>();
+        try {
+            open();
+            String[] column = {DatabaseManager.COLUMN_TITTLE, DatabaseManager.COLUMN_IMAGE,
+                DatabaseManager.COLUMN_DESCRIPTION, DatabaseManager.COLUMN_PUBDATE, DatabaseManager
+                .COLUMN_AUTHOR, DatabaseManager.COLUMN_LINK, DatabaseManager.COLUMN_CATEGORY};
+            Cursor cursor =
+                mDatabase
+                    .query(DatabaseManager.TABLE_NEWS, column,
+                        COLUMN_CATEGORY + "='" + category + "'", null, null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    NewsModel item = new NewsModel();
+                    item.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITTLE)));
+                    item.setImage(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE)));
+                    item.setDescription(
+                        cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
+                    item.setPubDate(cursor.getString(cursor.getColumnIndex(COLUMN_PUBDATE)));
+                    item.setAuthor(cursor.getString(cursor.getColumnIndex(COLUMN_AUTHOR)));
+                    item.setLink(cursor.getString(cursor.getColumnIndex(COLUMN_LINK)));
+                    item.setCategory(cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY)));
+                    list.add(item);
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+        return list;
+    }
+
     public void addNewsToDatabase(NewsModel newsModel) {
         try {
             open();
@@ -131,12 +166,38 @@ public class DatabaseManager extends SQLiteOpenHelper {
             contentValues.put(COLUMN_AUTHOR, newsModel.getAuthor());
             contentValues.put(COLUMN_LINK, newsModel.getLink());
             contentValues.put(COLUMN_CATEGORY, newsModel.getCategory());
-            mDatabase.insertOrThrow(TABLE_NEWS, null, contentValues);
+            if (!isTitleNewsExists(mDatabase, newsModel.getTitle())) {
+                mDatabase.insertOrThrow(TABLE_NEWS, null, contentValues);
+            } else {
+                updateNews(newsModel);
+            }
             mDatabase.close();
         } catch (SQLiteException e) {
             e.printStackTrace();
         } finally {
             close();
         }
+    }
+
+    public int updateNews(NewsModel newsModel) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_TITTLE, newsModel.getTitle());
+        contentValues.put(COLUMN_IMAGE, newsModel.getImage());
+        contentValues.put(COLUMN_DESCRIPTION, newsModel.getDescription());
+        contentValues.put(COLUMN_PUBDATE, newsModel.getPubDate());
+        contentValues.put(COLUMN_AUTHOR, newsModel.getAuthor());
+        contentValues.put(COLUMN_LINK, newsModel.getLink());
+        contentValues.put(COLUMN_CATEGORY, newsModel.getCategory());
+        int update = db.update(TABLE_NEWS, contentValues, COLUMN_TITTLE + " = ?",
+            new String[]{String.valueOf(newsModel.getTitle())});
+        db.close();
+        return update;
+    }
+
+    public boolean isTitleNewsExists(SQLiteDatabase db, String title) {
+        Cursor cursor = db.rawQuery("SELECT 1 FROM " + TABLE_NEWS
+            + " WHERE " + COLUMN_TITTLE + "='" + title + "'", new String[]{});
+        return cursor != null & cursor.getCount() > 0;
     }
 }

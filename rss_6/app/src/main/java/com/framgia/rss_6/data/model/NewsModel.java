@@ -1,6 +1,8 @@
 package com.framgia.rss_6.data.model;
 
-public class NewsModel {
+import java.io.Serializable;
+
+public class NewsModel implements Serializable {
     private String mTitle;
     private String mImage;
     private String mDescription;

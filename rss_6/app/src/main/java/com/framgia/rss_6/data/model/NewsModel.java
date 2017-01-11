@@ -9,6 +9,20 @@ public class NewsModel {
     private String mLink;
     private String mCategory;
 
+    public NewsModel() {
+    }
+
+    public NewsModel(String title, String image, String description, String pubDate,
+                     String author, String link, String category) {
+        mTitle = title;
+        mImage = image;
+        mDescription = description;
+        mPubDate = pubDate;
+        mAuthor = author;
+        mLink = link;
+        mCategory = category;
+    }
+
     public String getTitle() {
         return mTitle;
     }

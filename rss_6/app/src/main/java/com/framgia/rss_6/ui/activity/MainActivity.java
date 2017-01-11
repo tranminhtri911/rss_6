@@ -2,16 +2,54 @@ package com.framgia.rss_6.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.framgia.rss_6.R;
+import com.framgia.rss_6.data.model.ChannelModel;
+import com.framgia.rss_6.ui.adapter.ChannelAdapter;
+import com.framgia.rss_6.ultils.DatabaseManager;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements ChannelAdapter.ItemClickListener {
+    private List<ChannelModel> mChannelModelList = new ArrayList<ChannelModel>();
+    private RecyclerView mRecyclerView;
+    private ChannelAdapter mChannelAdapter;
+    private DatabaseManager mDatabaseManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initView();
+    }
+
+    public void initView() {
+        mDatabaseManager = new DatabaseManager(this);
+        try {
+            mDatabaseManager.isCreatedDatabase();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycle_channel);
+        mChannelModelList = mDatabaseManager.getALLChannelFromData();
+        mChannelAdapter = new ChannelAdapter(this, mChannelModelList);
+        mChannelAdapter.setClickListener(this);
+        mRecyclerView.setAdapter(mChannelAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+        ChannelModel channel = mChannelModelList.get(position);
+        startActivity(ListNewsActivity.getListNewsIntent(this, channel));
     }
 
     @Override

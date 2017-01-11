@@ -4,6 +4,14 @@ public class ChannelModel {
     private String mCategory;
     private String mRssLink;
 
+    public ChannelModel() {
+    }
+
+    public ChannelModel(String category, String rssLink) {
+        mCategory = category;
+        mRssLink = rssLink;
+    }
+
     public String getCategory() {
         return mCategory;
     }

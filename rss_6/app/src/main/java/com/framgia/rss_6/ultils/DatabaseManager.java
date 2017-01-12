@@ -1,28 +1,19 @@
 package com.framgia.rss_6.ultils;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import com.framgia.rss_6.data.model.ChannelModel;
-import com.framgia.rss_6.data.model.NewsModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseManager extends SQLiteOpenHelper {
     public static final String TABLE_CHANNEL = "tbl_channel";
     public static final String TABLE_NEWS = "tbl_news";
     public static final String TABLE_HISTORY = "tbl_history";
-    public static final String TABLE_FAVORITE = "tbl_favorite";
     public static final String COLUMN_CATEGORY = "category";
     public static final String COLUMN_RSSLINK = "rsslink";
     public static final String COLUMN_TITTLE = "title";
@@ -31,10 +22,10 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public static final String COLUMN_PUBDATE = "pubdate";
     public static final String COLUMN_AUTHOR = "author";
     public static final String COLUMN_LINK = "link";
+    public static final String COLUMN_ID = "id";
     private static final String DATABASE_NAME = "CSDL";
     private static final int DATABASE_VERSION = 1;
     public static String DB_PATH = "/data/data/com.framgia.rss_6/databases/";
-    private SQLiteDatabase mDatabase;
     private Context mContext;
 
     public DatabaseManager(Context context) {
@@ -88,55 +79,5 @@ public class DatabaseManager extends SQLiteOpenHelper {
         myOutput.flush();
         myOutput.close();
         myInput.close();
-    }
-
-    public void open() {
-        mDatabase = this.getWritableDatabase();
-    }
-
-    public List<ChannelModel> getALLChannelFromData() {
-        List<ChannelModel> list = new ArrayList<ChannelModel>();
-        try {
-            open();
-            String[] column = {DatabaseManager.COLUMN_CATEGORY, DatabaseManager.COLUMN_RSSLINK};
-            Cursor cursor =
-                mDatabase
-                    .query(DatabaseManager.TABLE_CHANNEL, column, null, null, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    ChannelModel item = new ChannelModel();
-                    item.setCategory(cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY)));
-                    item.setRssLink(cursor.getString(cursor.getColumnIndex(COLUMN_RSSLINK)));
-                    list.add(item);
-                    cursor.moveToNext();
-                }
-            }
-            cursor.close();
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            close();
-        }
-        return list;
-    }
-
-    public void addNewsToDatabase(NewsModel newsModel) {
-        try {
-            open();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(COLUMN_TITTLE, newsModel.getTitle());
-            contentValues.put(COLUMN_IMAGE, newsModel.getImage());
-            contentValues.put(COLUMN_DESCRIPTION, newsModel.getDescription());
-            contentValues.put(COLUMN_PUBDATE, newsModel.getPubDate());
-            contentValues.put(COLUMN_AUTHOR, newsModel.getAuthor());
-            contentValues.put(COLUMN_LINK, newsModel.getLink());
-            contentValues.put(COLUMN_CATEGORY, newsModel.getCategory());
-            mDatabase.insertOrThrow(TABLE_NEWS, null, contentValues);
-            mDatabase.close();
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } finally {
-            close();
-        }
     }
 }

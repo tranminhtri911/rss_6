@@ -23,17 +23,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/text_title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_blue"
+                android:textSize="@dimen/dp_25"/>
 
-            <TextView
-                android:id="@+id/text_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/author"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/text_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/image_news"
@@ -44,7 +58,8 @@
             <TextView
                 android:id="@+id/text_pubdate"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
 
             <TextView
                 android:id="@+id/text_description"

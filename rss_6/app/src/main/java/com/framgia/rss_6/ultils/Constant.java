@@ -19,4 +19,6 @@ public class Constant {
     public static final String BUNDLE_NEWS = "bundle_news";
     public static final String HISTORY = "History";
     public static final String TEXT_PLAIN = "text/plain";
+    public static final String PDF_EXTENSION = ".pdf";
+    public static final String SD_PATH = "/sdcard/";
 }

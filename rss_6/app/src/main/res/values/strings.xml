@@ -5,5 +5,13 @@
     <string name="menu_share">Share</string>
     <string name="menu_print">Print</string>
     <string name="date_published">Published Date:</string>
-    <string name="author">Author : </string>
+    <string name="author">Author :&#160;</string>
+    <string name="action_no">No</string>
+    <string name="action_yes">Yes</string>
+    <string name="title_pdf_save_message">Save as Pdf?</string>
+    <string name="error_message">Problem Creating File</string>
+    <string name="title_pdf_create_message">Create Successful</string>
+    <string name="action">Save</string>
+    <string name="title_update_successful">Update Successful</string>
+    <string name="action_loading">Loading...</string>
 </resources>

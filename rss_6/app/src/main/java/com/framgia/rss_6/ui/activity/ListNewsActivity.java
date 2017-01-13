@@ -42,6 +42,7 @@ public class ListNewsActivity extends AppCompatActivity implements NewsAdapter.I
     private String mRsslink;
     private DatabaseControl mDatabaseControl;
     private String mImageUrl;
+    private String mAuthor;
     private ChannelModel mChannelModel;
 
     public static Intent getListNewsIntent(Context context, ChannelModel channel) {

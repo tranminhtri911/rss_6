@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +20,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailNewsActivity extends AppCompatActivity {
+public class DetailNewsActivity extends AppCompatActivity implements View.OnClickListener {
     @BindView(R.id.text_title)
     TextView mTextTitle;
     @BindView(R.id.text_description)
@@ -58,6 +59,7 @@ public class DetailNewsActivity extends AppCompatActivity {
         mTextPubDate.setText(mNewsModel.getPubDate());
         mTextAuthor.setText(mNewsModel.getAuthor());
         mTextLink.setText(mNewsModel.getLink());
+        mTextLink.setOnClickListener(this);
         Picasso.with(getApplicationContext()).load(mNewsModel.getImage()).into(mImageNews);
     }
 
@@ -76,21 +78,23 @@ public class DetailNewsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // TODO history screen
             case R.id.menu_history:
+                Intent intent = new Intent(this, HistoryActivity.class);
+                startActivity(intent);
                 break;
-            // TODO favorite screen
-            case R.id.menu_favorite:
-                break;
-            // TODO share screen
             case R.id.menu_share:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, mNewsModel.getLink());
+                sendIntent.setType(Constant.TEXT_PLAIN);
+                startActivity(sendIntent);
                 break;
             // TODO print screen
             case R.id.menu_print:
@@ -99,5 +103,10 @@ public class DetailNewsActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+        startActivity(WebViewActivity.getWebViewIntent(this, mNewsModel));
     }
 }

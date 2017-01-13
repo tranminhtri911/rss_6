@@ -5,5 +5,5 @@
     <string name="menu_share">Share</string>
     <string name="menu_print">Print</string>
     <string name="date_published">Published Date:</string>
-    <string name="author">Author:</string>
+    <string name="author">Author : </string>
 </resources>

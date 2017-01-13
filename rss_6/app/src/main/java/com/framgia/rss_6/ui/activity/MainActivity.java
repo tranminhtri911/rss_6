@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements ChannelAdapter.It
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -74,9 +74,6 @@ public class MainActivity extends AppCompatActivity implements ChannelAdapter.It
             case R.id.menu_history:
                 Intent intent = new Intent(this, HistoryActivity.class);
                 startActivity(intent);
-                break;
-            // TODO favorite screen
-            case R.id.menu_favorite:
                 break;
             default:
                 break;

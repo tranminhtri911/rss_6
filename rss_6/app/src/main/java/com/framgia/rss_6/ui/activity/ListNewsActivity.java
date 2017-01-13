@@ -120,7 +120,7 @@ public class ListNewsActivity extends AppCompatActivity implements NewsAdapter.I
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -129,9 +129,6 @@ public class ListNewsActivity extends AppCompatActivity implements NewsAdapter.I
         switch (item.getItemId()) {
             // TODO history screen
             case R.id.menu_history:
-                break;
-            // TODO favorite screen
-            case R.id.menu_favorite:
                 break;
             default:
                 break;

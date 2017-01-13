@@ -1,5 +1,9 @@
 package com.framgia.rss_6.data.model;
 
+import android.database.Cursor;
+
+import com.framgia.rss_6.ultils.DatabaseManager;
+
 import java.io.Serializable;
 
 public class ChannelModel implements Serializable {
@@ -12,6 +16,11 @@ public class ChannelModel implements Serializable {
     public ChannelModel(String category, String rssLink) {
         mCategory = category;
         mRssLink = rssLink;
+    }
+
+    public ChannelModel(Cursor cursor) {
+        mCategory = cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_CATEGORY));
+        mRssLink = cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_RSSLINK));
     }
 
     public String getCategory() {

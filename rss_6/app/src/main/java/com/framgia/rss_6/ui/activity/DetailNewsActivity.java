@@ -2,8 +2,10 @@ package com.framgia.rss_6.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -46,6 +48,7 @@ public class DetailNewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_news);
         getDataFromNews();
         ButterKnife.bind(this);
+        setupToolbar();
         initView();
     }
 
@@ -62,6 +65,13 @@ public class DetailNewsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(Constant.BUNDLE_DATA);
         mNewsModel = (NewsModel) bundle.getSerializable(Constant.BUNDLE_NEWS);
+    }
+
+    public void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(mNewsModel.getCategory());
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
     }
 
     @Override

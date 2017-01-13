@@ -2,21 +2,23 @@ package com.framgia.rss_6.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.framgia.rss_6.R;
 import com.framgia.rss_6.data.model.ChannelModel;
+import com.framgia.rss_6.data.model.DatabaseControl;
 import com.framgia.rss_6.data.model.NewsModel;
 import com.framgia.rss_6.ui.adapter.NewsAdapter;
 import com.framgia.rss_6.ultils.Constant;
-import com.framgia.rss_6.ultils.DatabaseManager;
 import com.framgia.rss_6.ultils.XmlParser;
 
 import org.w3c.dom.Document;
@@ -38,7 +40,7 @@ public class ListNewsActivity extends AppCompatActivity implements NewsAdapter.I
     private String mResult;
     private String mCategory;
     private String mRsslink;
-    private DatabaseManager mDatabaseManager;
+    private DatabaseControl mDatabaseControl;
     private String mImageUrl;
     private ChannelModel mChannelModel;
 
@@ -68,12 +70,20 @@ public class ListNewsActivity extends AppCompatActivity implements NewsAdapter.I
         return content.toString();
     }
 
+    public void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(mCategory);
+        toolbar.setTitleTextColor(Color.WHITE);
+        setSupportActionBar(toolbar);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_news);
         getDataFromChannel();
         getDataFromXml();
+        setupToolbar();
         initView();
     }
 
@@ -86,9 +96,9 @@ public class ListNewsActivity extends AppCompatActivity implements NewsAdapter.I
     }
 
     public void initView() {
-        mDatabaseManager = new DatabaseManager(this);
+        mDatabaseControl = new DatabaseControl(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycle_news);
-        mNewsModels = mDatabaseManager.getALLNewsFromData(mCategory);
+        mNewsModels = mDatabaseControl.getAllNewsFromData(mCategory);
         mNewsAdapter = new NewsAdapter(getApplicationContext(), mNewsModels);
         mNewsAdapter.setClickListener(this);
         mRecyclerView.setAdapter(mNewsAdapter);
@@ -101,6 +111,7 @@ public class ListNewsActivity extends AppCompatActivity implements NewsAdapter.I
     public void onClick(View view, int position) {
         NewsModel newsModel = mNewsModels.get(position);
         startActivity(DetailNewsActivity.getDetailNewsIntent(this, newsModel));
+        mDatabaseControl.addHistoryNewsToDatabase(newsModel);
     }
 
     public void getDataFromXml() {
@@ -158,7 +169,7 @@ public class ListNewsActivity extends AppCompatActivity implements NewsAdapter.I
                 }
                 newsModel.setImage(mImageUrl);
                 newsModel.setCategory(mCategory);
-                mDatabaseManager.addNewsToDatabase(newsModel);
+                mDatabaseControl.addNewsToDatabase(newsModel);
             }
         }
     }

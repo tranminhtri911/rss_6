@@ -1,5 +1,9 @@
 package com.framgia.rss_6.data.model;
 
+import android.database.Cursor;
+
+import com.framgia.rss_6.ultils.DatabaseManager;
+
 import java.io.Serializable;
 
 public class NewsModel implements Serializable {
@@ -23,6 +27,17 @@ public class NewsModel implements Serializable {
         mAuthor = author;
         mLink = link;
         mCategory = category;
+    }
+
+    public NewsModel(Cursor cursor) {
+        mTitle = cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_TITTLE));
+        mImage = cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_IMAGE));
+        mDescription = cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_DESCRIPTION));
+        mPubDate =
+            cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_PUBDATE));
+        mAuthor = cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_AUTHOR));
+        mLink = cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_LINK));
+        mCategory = cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_CATEGORY));
     }
 
     public String getTitle() {

@@ -17,4 +17,5 @@ public class Constant {
     public static final String BUNDLE_DATA = "bundle_data";
     public static final String BUNDLE_CHANNEL = "bundle_chanel";
     public static final String BUNDLE_NEWS = "bundle_news";
+    public static final String HISTORY = "History";
 }

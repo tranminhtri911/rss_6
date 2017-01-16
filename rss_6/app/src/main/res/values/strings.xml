@@ -11,7 +11,10 @@
     <string name="title_pdf_save_message">Save as Pdf?</string>
     <string name="error_message">Problem Creating File</string>
     <string name="title_pdf_create_message">Create Successful</string>
-    <string name="action">Save</string>
+    <string name="action_save">Save</string>
     <string name="title_update_successful">Update Successful</string>
     <string name="action_loading">Loading...</string>
+    <string name="msg_check_connect">Check Connection</string>
+    <string name="msg_check_permission">Permission Denied</string>
+
 </resources>

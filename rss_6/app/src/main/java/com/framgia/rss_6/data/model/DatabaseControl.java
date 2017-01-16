@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
+import com.framgia.rss_6.ultils.Constant;
 import com.framgia.rss_6.ultils.DatabaseManager;
 
 import java.util.ArrayList;
@@ -76,6 +77,7 @@ public class DatabaseControl extends DatabaseManager {
         contentValues.put(DatabaseManager.COLUMN_AUTHOR, newsModel.getAuthor());
         contentValues.put(DatabaseManager.COLUMN_LINK, newsModel.getLink());
         contentValues.put(DatabaseManager.COLUMN_CATEGORY, newsModel.getCategory());
+        contentValues.put(DatabaseManager.COLUMN_ADD_DATE, newsModel.getAddDate());
         return contentValues;
     }
 
@@ -140,10 +142,42 @@ public class DatabaseControl extends DatabaseManager {
             open();
             ContentValues contentValues = new ContentValues();
             contentValues.put(COLUMN_TITTLE, newsModel.getTitle());
+            contentValues.put(COLUMN_ADD_DATE, newsModel.getAddDate());
             mDatabase.insertOrThrow(TABLE_HISTORY, null, contentValues);
             mDatabase.close();
         } catch (SQLiteException e) {
             e.printStackTrace();
+        } finally {
+            close();
+        }
+    }
+
+    public void deleteNewsHistory() {
+        open();
+        try {
+            String query = "DELETE  FROM " + TABLE_HISTORY +
+                " WHERE (julianday('now') - julianday(adddate)) > " + Constant.HISTORY_DAY;
+            mDatabase.execSQL(query);
+            mDatabase.close();
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        } finally {
+            close();
+        }
+    }
+
+    public int checkFirstTimeOnDay() {
+        int num = 0;
+        open();
+        try {
+            String query = "SELECT * FROM " + TABLE_NEWS + " WHERE " + COLUMN_ADD_DATE + " = " +
+                CURRENTDATE;
+            Cursor cursor = mDatabase.rawQuery(query, null);
+            num = cursor.getCount();
+            mDatabase.close();
+            return num;
+        } catch (SQLiteException e) {
+            return 0;
         } finally {
             close();
         }

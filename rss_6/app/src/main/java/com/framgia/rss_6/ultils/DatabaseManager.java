@@ -23,6 +23,8 @@ public class DatabaseManager extends SQLiteOpenHelper {
     public static final String COLUMN_AUTHOR = "author";
     public static final String COLUMN_LINK = "link";
     public static final String COLUMN_ID = "id";
+    public static final String COLUMN_ADD_DATE = "adddate";
+    public static final String CURRENTDATE = "date(\"now\")";
     private static final String DATABASE_NAME = "CSDL";
     private static final int DATABASE_VERSION = 1;
     public static String DB_PATH = "/data/data/com.framgia.rss_6/databases/";

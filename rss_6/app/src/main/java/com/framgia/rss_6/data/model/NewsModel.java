@@ -14,12 +14,13 @@ public class NewsModel implements Serializable {
     private String mAuthor;
     private String mLink;
     private String mCategory;
+    private String mAddDate;
 
     public NewsModel() {
     }
 
     public NewsModel(String title, String image, String description, String pubDate,
-                     String author, String link, String category) {
+                     String author, String link, String category, String addDate) {
         mTitle = title;
         mImage = image;
         mDescription = description;
@@ -27,6 +28,7 @@ public class NewsModel implements Serializable {
         mAuthor = author;
         mLink = link;
         mCategory = category;
+        mAddDate = addDate;
     }
 
     public NewsModel(Cursor cursor) {
@@ -38,6 +40,7 @@ public class NewsModel implements Serializable {
         mAuthor = cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_AUTHOR));
         mLink = cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_LINK));
         mCategory = cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_CATEGORY));
+        mAddDate = cursor.getString(cursor.getColumnIndex(DatabaseManager.COLUMN_ADD_DATE));
     }
 
     public String getTitle() {
@@ -54,6 +57,14 @@ public class NewsModel implements Serializable {
 
     public void setImage(String image) {
         mImage = image;
+    }
+
+    public String getAddDate() {
+        return mAddDate;
+    }
+
+    public void setAddDate(String addDate) {
+        mAddDate = addDate;
     }
 
     public String getDescription() {

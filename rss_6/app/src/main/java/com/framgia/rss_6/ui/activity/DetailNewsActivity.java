@@ -1,10 +1,14 @@
 package com.framgia.rss_6.ui.activity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -47,6 +51,20 @@ public class DetailNewsActivity extends AppCompatActivity implements View.OnClic
         return intent;
     }
 
+    public void verifyStoragePermissions(Activity activity) {
+        int permission = ActivityCompat
+            .checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission == PackageManager.PERMISSION_GRANTED) {
+            showPrintfConfirmDialog();
+        } else {
+            ActivityCompat.requestPermissions(
+                activity,
+                Constant.PERMISSIONS_STORAGE,
+                Constant.REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +73,23 @@ public class DetailNewsActivity extends AppCompatActivity implements View.OnClic
         ButterKnife.bind(this);
         setupToolbar();
         initView();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        switch (requestCode) {
+            case Constant.REQUEST_EXTERNAL_STORAGE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showPrintfConfirmDialog();
+                } else {
+                    Toast.makeText(this, R.string.msg_check_permission, Toast.LENGTH_SHORT)
+                        .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     public void initView() {
@@ -101,7 +136,7 @@ public class DetailNewsActivity extends AppCompatActivity implements View.OnClic
                 startActivity(sendIntent);
                 break;
             case R.id.menu_print:
-                showPrintfConfirmDialog();
+                verifyStoragePermissions(this);
                 break;
             default:
                 break;
@@ -110,7 +145,7 @@ public class DetailNewsActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void showPrintfConfirmDialog() {
-        new AlertDialog.Builder(this).setTitle(R.string.action)
+        new AlertDialog.Builder(this).setTitle(R.string.action_save)
             .setMessage(R.string.title_pdf_save_message)
             .setPositiveButton(R.string.action_yes, new DialogInterface.OnClickListener() {
                 @Override
@@ -129,9 +164,8 @@ public class DetailNewsActivity extends AppCompatActivity implements View.OnClic
 
     public boolean savePdf() {
         PDFCreator createPdf = new PDFCreator();
-        if (createPdf.write(mNewsModel.getTitle(), mNewsModel.getPubDate(),
-            mNewsModel.getDescription(),
-            mNewsModel.getAuthor())) {
+        if (createPdf.write(mNewsModel.getTitle(), mNewsModel.getPubDate(), mNewsModel
+            .getImage(), mNewsModel.getDescription(), mNewsModel.getAuthor())) {
             Toast.makeText(getApplicationContext(), R.string.title_pdf_create_message,
                 Toast.LENGTH_SHORT)
                 .show();

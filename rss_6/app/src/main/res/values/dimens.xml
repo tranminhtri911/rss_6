@@ -10,4 +10,5 @@
     <dimen name="image_detail_size">200dp</dimen>
     <dimen name="image_news_size">150dp</dimen>
     <dimen name="dp_25">30dp</dimen>
+    <dimen name="dp_50">50dp</dimen>
 </resources>

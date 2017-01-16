@@ -3,6 +3,7 @@ package com.framgia.rss_6.ultils;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -11,7 +12,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class PDFCreator {
-    public boolean write(String title, String publishedDate, String description,
+    private static Image mImageParagraph;
+
+    public boolean write(String title, String publishedDate, String image, String description,
                          String
                              Author) {
         try {
@@ -40,8 +43,11 @@ public class PDFCreator {
             descriptionParagraph.setAlignment(Element.ALIGN_JUSTIFIED);
             authorParagraph.add(Author);
             authorParagraph.setAlignment(Element.ALIGN_CENTER);
+            mImageParagraph = Image.getInstance(image);
+            mImageParagraph.setAlignment(Element.ALIGN_CENTER);
             document.add(new Paragraph(titleParagraph));
             document.add(new Paragraph(dateParagraph));
+            document.add(mImageParagraph);
             document.add(new Paragraph(descriptionParagraph));
             document.add(new Paragraph(authorParagraph));
             document.close();

@@ -1,9 +1,11 @@
 package com.framgia.rss_6.ui.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,10 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.framgia.rss_6.R;
 import com.framgia.rss_6.data.model.NewsModel;
 import com.framgia.rss_6.ultils.Constant;
+import com.framgia.rss_6.ultils.PDFCreator;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -96,8 +100,8 @@ public class DetailNewsActivity extends AppCompatActivity implements View.OnClic
                 sendIntent.setType(Constant.TEXT_PLAIN);
                 startActivity(sendIntent);
                 break;
-            // TODO print screen
             case R.id.menu_print:
+                showPrintfConfirmDialog();
                 break;
             default:
                 break;
@@ -105,8 +109,36 @@ public class DetailNewsActivity extends AppCompatActivity implements View.OnClic
         return super.onOptionsItemSelected(item);
     }
 
+    public void showPrintfConfirmDialog() {
+        new AlertDialog.Builder(this).setTitle(R.string.action)
+            .setMessage(R.string.title_pdf_save_message)
+            .setPositiveButton(R.string.action_yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    savePdf();
+                }
+            })
+            .setNegativeButton(R.string.action_no, null)
+            .setIcon(android.R.drawable.ic_menu_save).show();
+    }
+
     @Override
     public void onClick(View view) {
         startActivity(WebViewActivity.getWebViewIntent(this, mNewsModel));
+    }
+
+    public boolean savePdf() {
+        PDFCreator createPdf = new PDFCreator();
+        if (createPdf.write(mNewsModel.getTitle(), mNewsModel.getPubDate(),
+            mNewsModel.getDescription(),
+            mNewsModel.getAuthor())) {
+            Toast.makeText(getApplicationContext(), R.string.title_pdf_create_message,
+                Toast.LENGTH_SHORT)
+                .show();
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.error_message,
+                Toast.LENGTH_SHORT).show();
+        }
+        return true;
     }
 }
